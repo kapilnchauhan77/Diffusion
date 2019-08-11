@@ -1,0 +1,41 @@
+import simplegui
+import random
+import math
+clr=['red','green','white','blue']
+vel=[]
+for z in range(100):
+    zx=random.choice((-1,1))
+    vel.append(random.random()*zx)
+particle=[]
+start=True
+class Particle:
+    def __init__(self,pos,clrs):
+        self.pos=pos
+        self.clr=clrs
+    def update(self):
+        global vel
+        if start:
+            self.velx=random.choice(vel)
+            self.vely=random.choice(vel)
+            self.pos[0]+=self.velx
+            self.pos[1]+=self.vely
+        if not start:
+            self.pos[0]+=self.velx
+            self.pos[1]+=self.vely
+    def draws(self,canvas):
+        canvas.draw_circle(self.pos,8,1,self.clr,self.clr)
+def click(k):
+    global start
+    start=False
+def draw(canvas):
+    for p in particle:
+        p.update()
+        p.draws(canvas)
+for i in range(100):
+    if start:
+        p=Particle([150,100],random.choice(clr))
+        particle.append(p)
+frame = simplegui.create_frame("Home", 300, 200)
+frame.set_mouseclick_handler(click)
+frame.set_draw_handler(draw)
+frame.start()
